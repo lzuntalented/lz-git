@@ -1,0 +1,95 @@
+.page {
+  /* height: 100vh;
+  background-color: #040d21; */
+}
+.header {
+  text-align: center;
+  font-size: 24px;
+  padding: 24px 0;
+}
+.starArea {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+.star {
+  background-image: radial-gradient(2px 2px at 10px 20px, #eee, rgba(0, 0, 0, 0)),radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),radial-gradient(2px 2px at 90px 40px, #ddd, rgba(0, 0, 0, 0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0;
+  animation: zoomIn 15s infinite;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+.bg {
+  pointer-events: none;
+}
+
+.star:nth-child(1) {
+  background-position: 50% -40%;
+  animation-delay: 0s;
+}
+
+.star:nth-child(2) {
+  background-position: 20% 60%;
+  animation-delay: 2s;
+}
+.star:nth-child(3) {
+  background-position: 40% -80%;
+  animation-delay: 4s;
+}
+.star:nth-child(4) {
+  background-position: -20% -30%;
+  animation-delay: 6s;
+}
+.star:nth-child(5) {
+  background-position: 80% 30%;
+  animation-delay: 8s;
+}
+.starbg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  transform: translate(-50%, -50%);
+}
+.form {
+  border: 1px solid #d8dee4;
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  padding: 24px;
+  width: 600px;
+  margin: 0 auto;
+}
+/* .formItemLabel {
+  color: #00cfc8;
+  line-height: 25px;
+}
+.formItemInput {
+  caret-color: #fff;
+  color: #fff;
+}
+.formItemInput :global(.ant-input-group-addon) {
+  background-color: transparent;
+  border-width: 0;
+}
+.formItemInput input {
+  color: #fff;
+}
+@keyframes zoomIn {
+  from {
+    opacity: 0.3;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+} */

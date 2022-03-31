@@ -1,0 +1,18 @@
+.page {
+    width: 900px;
+    margin: 0 auto;
+}
+
+.item {
+  padding: 24px 0;
+  border-bottom: 1px solid #d8dee4;
+}
+
+.itemTitle {
+  font-size: 20px;
+}
+
+.fileName:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

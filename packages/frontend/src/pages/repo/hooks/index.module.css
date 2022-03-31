@@ -1,0 +1,9 @@
+.titleContainer {
+  border-bottom: 1px solid #d8dee4;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 20px;
+}

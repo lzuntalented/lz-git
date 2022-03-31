@@ -1,0 +1,26 @@
+.page {
+    width: 900px;
+    margin: 0 auto;
+
+    a {
+      color: auto;
+    }
+}
+
+.item {
+  padding: 24px 0;
+  border-bottom: 1px solid #d8dee4;
+}
+
+.itemTitle {
+  font-size: 20px;
+}
+
+.fileName:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.boxSpace {
+  margin-top: 16px;
+}

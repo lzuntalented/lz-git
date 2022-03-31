@@ -1,0 +1,21 @@
+h1 {
+  margin-bottom: 0;
+}
+
+.header {
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.header .user {
+  color: #fff;
+}
+
+.header .user:hover {
+  color: #1890ff;
+  cursor: pointer;
+}
+
+.App .ant-layout {
+  background-color: #fff;
+}

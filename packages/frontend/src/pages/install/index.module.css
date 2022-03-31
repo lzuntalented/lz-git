@@ -1,0 +1,11 @@
+.page {
+  width: 480px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 26px;
+  padding: 12px 0;
+  border-bottom: 1px solid #d8dee4;
+  margin-bottom: 12px;
+}

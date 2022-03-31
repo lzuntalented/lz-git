@@ -1,0 +1,23 @@
+.comp {
+  padding: 16px 32px 0 16px;
+  margin-bottom: 32px;
+  background-color: #f6f8fa;
+}
+
+.repoNameContainer {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.repoName {
+  color: #0969da;
+  font-size: 20px;
+}
+
+.repoName:hover {
+  text-decoration: underline;
+}
+
+.repoNameSpace {
+  margin: 0 4px;
+}

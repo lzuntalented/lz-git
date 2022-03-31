@@ -1,0 +1,49 @@
+.page {
+    width: 704px;
+    margin: 0 auto;
+}
+
+.title {
+    border-bottom: 1px solid #d8dee4;
+    margin-bottom: 32px;
+    padding-bottom: 8px;
+}
+
+.owner {
+    color: #24292f;
+}
+
+.ownerTitle {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.ownerSpace {
+    font-size: 20px;
+    padding: 0 12px;
+}
+
+.initArea {
+    border-top: 1px solid #d8dee4;
+    border-bottom: 1px solid #d8dee4;
+    margin: 16px 0;
+    padding: 16px 0;
+}
+
+.itemTitle {
+    color: #24292f;
+}
+
+.tip {
+    color: #57606a;
+    font-size: 12px;
+}
+
+.item {
+    margin-bottom: 10px;
+}
+
+.describe {
+    width: 100%;
+    margin-top: 16px;
+}

@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "bootstrap": "lerna bootstrap"
+  },
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "lerna": "^4.0.0"
+  }
+}
