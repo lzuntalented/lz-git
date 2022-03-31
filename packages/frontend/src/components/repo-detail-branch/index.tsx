@@ -23,12 +23,12 @@ function RepDetailBranch({ onChange }: RepDetailBranchProps) {
   const [branchList, setBranchList] = useState([] as {label: string, value: string}[]);
   useEffect(() => {
     getBranch(user, repoName).then((res: any) => {
-      const list = res.map((it: string) => ({
+      const list = res.list.map((it: string) => ({
         lable: it,
         value: it,
       }));
       setBranchList(list);
-      setCurrentBranch(list[0]?.value);
+      setCurrentBranch(res.master);
     });
   }, []);
 

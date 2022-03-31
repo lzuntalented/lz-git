@@ -71,13 +71,6 @@ export class RepoController {
         describe: it.describe,
       };
     });
-    // const user = 'lz';
-    // const list = fs.readdirSync(path.resolve(REPO_ROOT_PATH, user));
-    // return list.map((it) => {
-    //   if (/(\.git)$/.test(it)) {
-    //     return `${user}/${it.replace(/(\.git)$/, '')}`;
-    //   }
-    // });
   }
 
   @Get('list/branch')
@@ -85,17 +78,29 @@ export class RepoController {
     @Query('user') user: string,
     @Query('repoName') repoName: string,
   ) {
+    // 检查项目是否存在
+    const info = await this.repoService.getUserRepoDetail(
+      repoName.replace(/(\.git)$/, ''),
+    );
+    if (!info) {
+      return {
+        code: API_CODE.ERROR,
+        msg: '参数异常'
+      }
+    }
     const git = new Git(REPO_ROOT_PATH);
     git.init(user, repoName);
     const list = (await git.run(['show-ref'])) as string;
-    console.log(list, 'list--------');
-    return list
-      .split('\n')
-      .filter((it) => it)
-      .map((it) => {
-        const str = it.split(' ').slice(-1).join('');
-        return str.replace('refs/heads/', '');
-      });
+    return {
+      list: list
+        .split('\n')
+        .filter((it) => it)
+        .map((it) => {
+          const str = it.split(' ').slice(-1).join('');
+          return str.replace('refs/heads/', '');
+        }),
+      master: info.master,
+    };
   }
 
   /**
