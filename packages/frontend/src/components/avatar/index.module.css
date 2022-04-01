@@ -1,0 +1,12 @@
+.bg {
+  background-color: #24292f;
+}
+.name {
+  color: #fff;
+  background-color: #0969da;
+  border-radius: 50%;
+  line-height: 1.5;
+  text-align: center;
+  font-weight: bold;
+  display: inline-block;
+}

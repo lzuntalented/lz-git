@@ -1,0 +1,39 @@
+.bg {
+  background-color: #24292f;
+}
+.addIcon {
+  color: #fff;
+  margin-right: 4px;
+}
+.downIcon {
+  color: #fff;
+}
+.add:hover{
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+}
+.add:hover .addIcon,
+.add:hover .downIcon{
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+}
+.menuItem {
+  display: block;
+  padding: 4px 8px;
+  overflow: hidden;
+  color: #24292f;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.menuItem:hover {
+  background-color: #0969da;
+  color: #fff;
+}
+.userImg {
+  margin-right: 4px;
+  cursor: pointer;
+}
+.user:hover .downIcon{
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+}

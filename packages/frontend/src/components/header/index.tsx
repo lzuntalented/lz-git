@@ -1,20 +1,29 @@
+import { CaretDownOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   Button,
-  Col, Layout, Menu, Popconfirm, Row,
+  Col, Layout, Menu, Popconfirm, Popover, Row,
 } from 'antd';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LOGO } from '../../common/constants';
 import { useContext } from '../../context';
 import { logout } from '../../services/user';
+import Avatar from '../avatar';
+import style from './index.module.css';
 
 function Header() {
   const { userInfo } = useContext();
   const location = useLocation();
   const menus = [
     {
-      title: 'create',
+      title: '创建新仓库',
       href: '/create',
+    },
+  ];
+  const userMenus = [
+    {
+      title: '退出登录',
+      href: '/',
     },
   ];
   const navigate = useNavigate();
@@ -24,7 +33,7 @@ function Header() {
   return (
     ['/', '/login', '/register'].includes(location.pathname) ? null
       : (
-        <Layout.Header className="header">
+        <Layout.Header className={style.bg}>
           <Row itemType="flex" justify="space-between" align="middle">
             <Col>
               <a
@@ -40,52 +49,95 @@ function Header() {
               </a>
             </Col>
             <Col>
+              {
+              userInfo.account && (
               <Row itemType="flex" justify="space-between" align="middle" gutter={24}>
-                {userInfo.account && (
                 <Col>
-                  <Menu theme="dark" selectedKeys={[]}>
-                    {menus.map((it) => (
-                      <Menu.Item
-                        key={it.title}
-                        onClick={() => {
-                          navigate(it.href);
-                        }}
-                      >
-                        {it.title}
-                      </Menu.Item>
-                    ))}
-                  </Menu>
+                  <Popover
+                    placement="bottomRight"
+                    trigger={['click']}
+                    getPopupContainer={(n) => n.parentNode as HTMLDivElement}
+                    overlayInnerStyle={{ width: 160 }}
+                    content={(
+                      <div>
+                        {menus.map((it) => (
+                          <a
+                            className={style.menuItem}
+                            key={it.title}
+                            onClick={() => {
+                              navigate(it.href);
+                            }}
+                          >
+                            {it.title}
+                          </a>
+                        ))}
+                      </div>
+)}
+                  >
+                    <span className={style.add}>
+                      <PlusOutlined className={style.addIcon} />
+                      <CaretDownOutlined className={style.downIcon} />
+                    </span>
+                  </Popover>
                 </Col>
-                )}
                 <Col>
-                  {userInfo.account ? (
-                    <Popconfirm
-                      title="是否退出登录"
-                      onConfirm={() => {
-                        logout().then(() => {
-                          window.location.href = '/';
-                        });
-                      }}
-                      placement="bottomRight"
-                    >
-                      <span className="user" onClick={() => navigate(`/${userInfo.account}`)}>
-                        Hi，
-                        {userInfo.account}
+                  <Popover
+                    placement="bottomRight"
+                    trigger={['click']}
+                    title={(
+                      <div>
+                        当前登录帐号
+                        <br />
+                        <b>{userInfo.account}</b>
+                      </div>
+)}
+                    content={(
+                      <div>
+                        {userMenus.map((it) => (
+                          <a
+                            className={style.menuItem}
+                            key={it.title}
+                            onClick={() => {
+                              logout().then(() => {
+                                window.location.href = '/';
+                              });
+                            }}
+                          >
+                            {it.title}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                    // onConfirm={() => {
+                    //   logout().then(() => {
+                    //     window.location.href = '/';
+                    //   });
+                    // }}
+                    // placement="bottomRight"
+                  >
+                    <span className={style.user} onClick={() => navigate(`/${userInfo.account}`)}>
+                      <span className={style.userImg}>
+                        <Avatar url={userInfo.avatar} name={userInfo.account || userInfo.name || ''} />
                       </span>
-                    </Popconfirm>
-                  ) : (
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        navigate('/login');
-                      }}
-                    >
-                      登录
-                    </Button>
-                  )}
+                      <CaretDownOutlined className={style.downIcon} />
+                    </span>
+                  </Popover>
                 </Col>
               </Row>
-
+              )
+            }
+              {
+            !userInfo?.account && (
+            <Button
+              type="primary"
+              onClick={() => {
+                navigate('/login');
+              }}
+            >
+              登录
+            </Button>
+            )
+          }
             </Col>
           </Row>
         </Layout.Header>
