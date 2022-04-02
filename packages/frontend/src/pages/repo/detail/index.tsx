@@ -7,13 +7,14 @@ import {
 } from 'react-router-dom';
 import { FileOutlined, FolderFilled, FolderOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+// import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { getBranch, getFilesWithPath } from '../../../services/repo';
 import style from './index.module.css';
 import RepoDetailNav from '../../../components/repo-detail-nav';
 import RepDetailBranch from '../../../components/repo-detail-branch';
 import Box from '../../../components/box';
+import RenderMarkdown from '../../../components/render-markdown';
 
 interface ListItemData {
   isTree: boolean, hash: string, name: string
@@ -37,6 +38,10 @@ function RepoDir() {
   const [readmeContent, setReadmeContent] = useState('');
   const [topInfo, setTopInfo] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTreePath(subTree);
+  }, [subTree]);
 
   useEffect(() => {
     if (currentBranch) {
@@ -81,9 +86,9 @@ function RepoDir() {
                       // console.log('subTree', prefixPath);
                       setTreePath(prefixPath);
                       if (prefixPath === '') {
-                        navigate(`/${user}/${repoName}`, { replace: true });
+                        navigate(`/${user}/${repoName}`);
                       } else {
-                        navigate(`/${user}/${repoName}/tree/${currentBranch}/${prefixPath}`, { replace: true });
+                        navigate(`/${user}/${repoName}/tree/${currentBranch}/${prefixPath}`);
                       }
                     }}
                   >
@@ -108,14 +113,14 @@ function RepoDir() {
                       if (it.isTree) {
                         setTreePath(subTree ? `${subTree}/${it.name}` : it.name);
                         if (branch === '') {
-                          navigate(`/${user}/${repoName}/tree/${currentBranch}/${it.name}`, { replace: true });
+                          navigate(`/${user}/${repoName}/tree/${currentBranch}/${it.name}`);
                         } else {
-                          navigate(`${pathname}/${it.name}`, { replace: true });
+                          navigate(`${pathname}/${it.name}`);
                         }
                       } else if (branch === '') {
-                        navigate(`/${user}/${repoName}/blob/${currentBranch}/${it.name}`, { replace: true });
+                        navigate(`/${user}/${repoName}/blob/${currentBranch}/${it.name}`);
                       } else {
-                        navigate(`${pathname.replace(`/${user}/${repoName}/tree`, `/${user}/${repoName}/blob`)}/${it.name}`, { replace: true });
+                        navigate(`${pathname.replace(`/${user}/${repoName}/tree`, `/${user}/${repoName}/blob`)}/${it.name}`);
                       }
                     }}
                   >
@@ -135,34 +140,9 @@ function RepoDir() {
         className={style.boxSpace}
         header={<div>README.md</div>}
       >
-        <ReactMarkdown
-          components={{
-            // eslint-disable-next-line react/no-unstable-nested-components
-            code({
-              node, inline, className, children, ...props
-            }) {
-              const match = /language-(\w+)/.exec(className || '');
-              return !inline && match ? (
-                <SyntaxHighlighter
-                  // eslint-disable-next-line react/no-children-prop
-                  children={String(children).replace(/\n$/, '')}
-                  style={dark}
-                  language={match[1]}
-                  PreTag="div"
-                  // eslint-disable-next-line react/jsx-props-no-spreading
-                  {...props}
-                />
-              ) : (
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                <code className={className} {...props}>
-                  {children}
-                </code>
-              );
-            },
-          }}
-        >
-          {readmeContent}
-        </ReactMarkdown>
+        <RenderMarkdown
+          data={readmeContent}
+        />
       </Box>
       )}
     </div>

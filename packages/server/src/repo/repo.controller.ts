@@ -220,13 +220,6 @@ export class RepoController {
     const gitCmd = new Git(REPO_ROOT_PATH);
     gitCmd.init(user, repoName);
     if (pathHash) {
-      const getUniqueCmds = [
-        `cd ${REPO_ROOT_PATH}`,
-        `cd ${user}`,
-        `cd ${repoName}.git`,
-        `git ls-tree ${branch} ${pathHash}`,
-      ];
-      // const ret = execSync(getUniqueCmds.join(' && '));
       const ret = await gitCmd.run(['ls-tree', branch, pathHash]);
       pathHash = ret
         .split('\n')

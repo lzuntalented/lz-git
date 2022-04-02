@@ -48,7 +48,7 @@ export async function getFileContent(
     params: {
       user, repoName, path, branch,
     },
-  });
+  }) as string;
   return ret;
 }
 

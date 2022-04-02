@@ -14,6 +14,8 @@ import 'codemirror/lib/codemirror.css';
 import { getBranch, getFileContent, getFilesWithPath } from '../../../services/repo';
 import style from './index.module.css';
 import './index.css';
+import RenderMarkdown from '../../../components/render-markdown';
+import Box from '../../../components/box';
 
 interface ListItemData {
   isTree: boolean, hash: string, name: string
@@ -38,10 +40,12 @@ function RepoFile() {
   const [readmeContent, setReadmeContent] = useState('');
   const navigate = useNavigate();
   const codeRef = useRef<HTMLDivElement>(null);
+  const [fileContent, setFileContent] = useState('');
 
   useEffect(() => {
     if (branch) {
       getFileContent(user, repoName, currentBranch, treePath).then((r) => {
+        setFileContent(r);
         if (codeRef.current) {
           Codemirror(codeRef.current, {
             value: r,
@@ -57,17 +61,23 @@ function RepoFile() {
   return (
     <div className={style.page}>
       <div>
-        <List
-          size="small"
-          header={<div>Header</div>}
-          bordered
-          dataSource={[1]}
-          renderItem={(it) => (
-            <List.Item>
-              <div className="page-repo-file" ref={codeRef} />
-            </List.Item>
-          )}
-        />
+        {subTree.endsWith('.md') ? (
+          <Box header="header">
+            <RenderMarkdown data={fileContent} />
+          </Box>
+        ) : (
+          <List
+            size="small"
+            header={<div>Header</div>}
+            bordered
+            dataSource={[1]}
+            renderItem={(it) => (
+              <List.Item>
+                <div className="page-repo-file" ref={codeRef} />
+              </List.Item>
+            )}
+          />
+        )}
       </div>
     </div>
   );

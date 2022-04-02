@@ -11,7 +11,7 @@ function Box({ children, header, className = '' }: BoxProps) {
   return (
     <div className={`${style.comp} ${className}`}>
       <div className={style.header}>{header}</div>
-      <div>{children}</div>
+      <div className={style.content}>{children}</div>
     </div>
   );
 }
