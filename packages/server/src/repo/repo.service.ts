@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { createRandom } from 'src/utils';
 import { Repo } from './repo.entity';
 import { User } from 'src/user/user.entity';
@@ -42,6 +42,19 @@ export class RepoService {
       where: {
         name,
       },
+    });
+  }
+
+  async search(keyword: string) {
+    return await this.repoEntity.find({
+      relations: ['user'],
+      where: {
+        name: Like(`%${keyword}%`),
+      },
+      order: {
+        id: 'DESC',
+      },
+      take: 5,
     });
   }
 }

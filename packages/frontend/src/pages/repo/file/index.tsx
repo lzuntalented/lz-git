@@ -11,7 +11,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Codemirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
-import { getBranch, getFileContent, getFilesWithPath } from '../../../services/home';
+import { getBranch, getFileContent, getFilesWithPath } from '../../../services/repo';
 import style from './index.module.css';
 import './index.css';
 

@@ -1,4 +1,4 @@
-import axios, { REQUEST_URL } from '.';
+import axios, { axiosNoMessage, REQUEST_URL } from '.';
 
 const { USER } = REQUEST_URL;
 
@@ -20,7 +20,7 @@ export async function register(params: {
 }
 
 export async function info(): Promise<any> {
-  const ret = await axios.get(USER.INFO);
+  const ret = await axiosNoMessage.get(USER.INFO);
   return ret;
 }
 

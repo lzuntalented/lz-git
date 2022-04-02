@@ -7,9 +7,10 @@ import {
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getBranch } from '../../services/home';
+import { getBranch } from '../../services/repo';
 import style from './index.module.css';
 import { copy } from '../../tool';
+import { API_DOMAIN, isDev } from '../../common/constants';
 
 interface RepDetailBranchProps {
   onChange(v: string): void
@@ -38,7 +39,7 @@ function RepDetailBranch({ onChange }: RepDetailBranchProps) {
     }
   }, [currentBranch]);
 
-  const gitHttpUrl = `${window.location.origin}/${user}/${repoName}.git`;
+  const gitHttpUrl = `${isDev ? API_DOMAIN : window.location.origin}/${user}/${repoName}.git`;
   return (
     <Row className={style.comp} itemType="flex" justify="space-between">
       <Col>

@@ -54,6 +54,7 @@
 .person {
   margin-top: -17%;
   position: relative;
+  pointer-events: none;
 }
 .personWhite {
   background-color: #fff;

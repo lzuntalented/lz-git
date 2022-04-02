@@ -85,8 +85,8 @@ export class RepoController {
     if (!info) {
       return {
         code: API_CODE.ERROR,
-        msg: '参数异常'
-      }
+        msg: '参数异常',
+      };
     }
     const git = new Git(REPO_ROOT_PATH);
     git.init(user, repoName);
@@ -140,13 +140,6 @@ export class RepoController {
         .join();
       if (!pathHash) return [];
     }
-    // const cmds = [
-    //   `cd ${REPO_ROOT_PATH}`,
-    //   `cd ${user}`,
-    //   `cd ${repoName}.git`,
-    //   pathHash ? `git ls-tree ${pathHash}` : `git ls-tree ${branch} ${pathHash}`,
-    // ];
-    // console.log(cmds)
     let readmeContent = '';
     const ret = (
       await gitCmd.run(
@@ -156,7 +149,6 @@ export class RepoController {
       .split('\n')
       .filter((it) => it);
 
-    console.log(ret, 'ret');
     const result = [];
     for (let i = 0; i < ret.length; ++i) {
       const it = ret[i];
@@ -169,11 +161,6 @@ export class RepoController {
           treeUnique ? `${treeUnique}/${name}` : name,
         )
       )
-        // execSync([
-        //   `cd ${REPO_ROOT_PATH}/${user}/${repoName}.git`,
-        //   `git log -1 ${branch} --format="%s" -- ${treeUnique ? `${treeUnique}/${name}` : name}`
-        // ].join(' && '))
-        // .toString('utf-8')
         .split('\n')
         .filter((it) => it)
         .join();
@@ -184,11 +171,6 @@ export class RepoController {
           treeUnique ? `${treeUnique}/${name}` : name,
         )
       )
-        // execSync([
-        //   `cd ${REPO_ROOT_PATH}/${user}/${repoName}.git`,
-        //   `git log -1 ${branch} --format="%ar" -- ${treeUnique ? `${treeUnique}/${name}` : name}`
-        // ].join(' && '))
-        // .toString('utf-8')
         .split('\n')
         .filter((it) => it)
         .join();
@@ -198,11 +180,6 @@ export class RepoController {
           branch,
           treeUnique ? `${treeUnique}/${name}` : name,
         );
-        // execSync([
-        //   `cd ${REPO_ROOT_PATH}/${user}/${repoName}.git`,
-        //   `git show ${branch}:${treeUnique ? `${treeUnique}/${name}` : name}`
-        // ].join(' && '))
-        // .toString('utf-8')
       }
 
       result.push({
@@ -266,18 +243,20 @@ export class RepoController {
         .filter((it) => it.isTree)
         .map((it) => it.hash)
         .join();
-      //  console.log(getUniqueCmds, ret
-      //    .toString('utf-8'), pathHash)
-
-      // readmeContent = execSync(
-      //   [
-      //     `cd ${REPO_ROOT_PATH}/${user}/${repoName}.git`,
-      //     `git show ${branch}:${treeUnique}`,
-      //   ].join(' && '),
-      // ).toString('utf-8');
       readmeContent = await gitCmd.run(['show', `${branch}:${treeUnique}`]);
     }
 
     return readmeContent;
+  }
+
+  @Get('search')
+  async search(@Query('keyword') keyword: string) {
+    const word = (keyword || '').trim();
+    if (word.length > 0) {
+      const list = await this.repoService.search(keyword);
+      return list.map((it) => `${it.user.account}/${it.name}`);
+    } else {
+      return [];
+    }
   }
 }

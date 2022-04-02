@@ -1,4 +1,4 @@
-import axios, { REQUEST_URL } from '.';
+import axios, { axiosNoMessage, REQUEST_URL } from '.';
 
 const { REPO } = REQUEST_URL;
 
@@ -49,5 +49,16 @@ export async function getFileContent(
       user, repoName, path, branch,
     },
   });
+  return ret;
+}
+
+export async function seachRepo(
+  keyword: string,
+) {
+  const ret = await axiosNoMessage.get(REPO.SEARCH, {
+    params: {
+      keyword,
+    },
+  }) as string[];
   return ret;
 }

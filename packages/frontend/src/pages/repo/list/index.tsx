@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { ForkOutlined, StarOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getList } from '../../../services/home';
+import { getList } from '../../../services/repo';
 import style from './index.module.css';
 import { useContext } from '../../../context';
 

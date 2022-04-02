@@ -11,3 +11,8 @@ export interface IGetCategoryDataItem{
 export interface IGetCategoryList extends ApiResponse {
     data: IGetCategoryDataItem[]
 }
+
+export interface SelectOption<T> {
+  label: string;
+  value: T;
+}

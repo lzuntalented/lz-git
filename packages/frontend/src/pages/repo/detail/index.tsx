@@ -9,7 +9,7 @@ import { FileOutlined, FolderFilled, FolderOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { getBranch, getFilesWithPath } from '../../../services/home';
+import { getBranch, getFilesWithPath } from '../../../services/repo';
 import style from './index.module.css';
 import RepoDetailNav from '../../../components/repo-detail-nav';
 import RepDetailBranch from '../../../components/repo-detail-branch';

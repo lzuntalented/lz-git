@@ -3,6 +3,7 @@ import {
 } from 'antd';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import RepSelect from '../../components/repo-select';
 import { useContext } from '../../context';
 import style from './index.module.css';
 
@@ -24,7 +25,7 @@ function Home() {
               <Col>
                 <Row itemType="flex" justify="space-between" align="middle" gutter={12}>
                   <Col>
-                    <Input placeholder="Search Github" />
+                    <RepSelect placeholder="搜索项目" style={{ width: 200 }} />
                   </Col>
                   <Col>
                     <a onClick={() => { navigate('/login'); }}>登录</a>
@@ -49,7 +50,7 @@ function Home() {
               </Button>
             </Col>
             <Col span={12}>
-              <img src="https://github.githubassets.com/images/modules/site/home/globe.jpg" alt="" width="100%" />
+              <img src="http://static.lzz.show/sxm/globe.jpg" alt="" width="100%" />
             </Col>
           </Row>
         </div>
@@ -64,7 +65,7 @@ function Home() {
             1123
           </Col>
           <Col span={8}>
-            <img src="https://github.githubassets.com/images/modules/site/home/astro-mona.svg" alt="" width="100%" />
+            <img src="http://static.lzz.show/sxm/astro-mona.svg" alt="" width="100%" />
           </Col>
         </Row>
       </div>
