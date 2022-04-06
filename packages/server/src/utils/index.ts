@@ -1,4 +1,5 @@
 import fs = require('fs');
+import { API_CODE } from 'src/common/constants';
 
 export function initDir(path: string) {
   let createFlag = false;
@@ -43,4 +44,18 @@ export function createRandom(len = 6) {
     result += pool[Math.floor(Math.random() * poolSize)];
   }
   return result;
+}
+
+export function setResponse(code: number, data?: any) {
+  if (code === API_CODE.SUCCESS) {
+    return {
+      code,
+      data,
+    };
+  } else {
+    return {
+      code,
+      msg: data,
+    };
+  }
 }

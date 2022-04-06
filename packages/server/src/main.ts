@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import {
@@ -12,6 +12,8 @@ import { logger } from './middleware/logger.middleware';
 import session = require('express-session');
 import { header } from './middleware/header.middleware';
 import FileStore = require('session-file-store');
+import { AllExceptionsFilter } from './exception/exception.filter';
+import { ValidationPipe } from './pipe/validation.pipe';
 // import mysqlSession = require('express-mysql-session');
 
 // const MySQLStore = mysqlSession(session)
@@ -24,6 +26,9 @@ async function bootstrap() {
       credentials: true,
     });
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalPipes(new ValidationPipe());
+  const httpAdapter = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.use(logger);
   app.use(header);
 

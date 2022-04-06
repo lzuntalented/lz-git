@@ -37,15 +37,6 @@ export class HttpController {
     @Query('service') service: string,
     @Res() res: Response,
   ) {
-    // console.log('request here')
-    // const cmd = [
-    //   `cd ${REPO_ROOT_PATH}`,
-    //   `cd ${user}`,
-    //   `cd ${repoName}`,
-    //   'git upload-pack --stateless-rpc --advertise-refs .'
-    // ]
-    // const ret = execSync(cmd.join(' && ')).toString('utf-8')
-    // const result = `001${service === `git-upload-pack` ? 'e' : 'f'}# service=${service}\n0000${ret}`;
     res.setHeader('Content-Type', `application/x-${service}-advertisement`);
     res.header('Cache-Control', 'none');
     // res.status(HttpStatus.OK)
@@ -67,21 +58,6 @@ export class HttpController {
     // console.log(result)
     res.write(result);
     res.end();
-
-    // let cmdOut = []
-    // handler.stdout.on('data', (data) => {
-    //   cmdOut.push(data);
-    // });
-    // handler.on('close', (code) => {
-    //   if (code !== 0) {
-    //     console.log(`grep process exited with code ${code}`);
-    //   }
-    //   const firstLen = `# service=${service}\n`
-    //   const result = `00${Number(firstLen.length + 4).toString(16)}${firstLen}0000${Buffer.concat(cmdOut).toString()}`;
-    //   // console.log(result)
-    //   res.write(result)
-    //   res.end();
-    // });
   }
 
   @Post(['/git-upload-pack', '/git-receive-pack'])
@@ -133,75 +109,4 @@ export class HttpController {
     );
     res.end();
   }
-
-  // @Post('/git-upload-pack')
-  // head(
-  //   @Param('user') user: string,
-  //   @Param('repoName') repoName: string,
-  //   @Res() res: Response,
-  //   @Req() req: Request
-  // ) {
-  //   res.header('Content-Type', 'application/x-git-upload-pack-result')
-  //   res.header('Cache-Control', 'none')
-  //   res.status(HttpStatus.OK)
-  //   // const handler = exec(`cd ${REPO_ROOT_PATH}/${user}/${repoName} && git upload-pack --stateless-rpc ${REPO_ROOT_PATH}/${user}/${repoName}`)
-  //   // const handler = spawn(process.env.comspec, ['/c', `cd ${REPO_ROOT_PATH}/${user}/${repoName} && git upload-pack --stateless-rpc ${REPO_ROOT_PATH}/${user}/${repoName}`])
-  //   const git = new Git(REPO_ROOT_PATH);
-  //   git.init(user, repoName);
-  //   const handler = git.run(
-  //     [`upload-pack`,
-  //     `--stateless-rpc`,
-  //     `${REPO_ROOT_PATH}/${user}/${repoName}`]
-  //   )
-  //   handler.stdout.on('data', (data) => {
-  //     res.write(data)
-  //   });
-  //   handler.on('close', (code) => {
-  //     if (code !== 0) {
-  //       console.log(`grep process exited with code ${code}`);
-  //     }
-  //     res.end();
-  //   });
-
-  //   handler.stderr.pipe(process.stderr);
-  //   handler.stdin.write(req.body);
-  //   handler.stdin.end();
-  // }
-
-  // @Post('/git-receive-pack')
-  // receivePack(
-  //   @Param('user') user: string,
-  //   @Param('repoName') repoName: string,
-  //   @Res() res: Response,
-  //   @Req() req: Request
-  // ) {
-  //   console.log( `${REPO_ROOT_PATH}/${user}/${repoName}`, 'req.body----------------', req.body)
-  //   res.header('Content-Type', 'application/x-git-receive-pack-result')
-  //   res.header('Cache-Control', 'none')
-  //   res.status(HttpStatus.OK)
-
-  //   // const handler = spawn(process.env.comspec, ['/c', `cd ${REPO_ROOT_PATH}/${user}/${repoName} && git receive-pack --stateless-rpc ${REPO_ROOT_PATH}/${user}/${repoName}`])
-  //   // const handler = exec(`cd ${REPO_ROOT_PATH}/${user}/${repoName} && git receive-pack --stateless-rpc ${REPO_ROOT_PATH}/${user}/${repoName}`)
-  //   const git = new Git(REPO_ROOT_PATH);
-  //   git.init(user, repoName);
-  //   const handler = git.run(
-  //     `receive-pack`,
-  //     `--stateless-rpc`,
-  //     `${REPO_ROOT_PATH}/${user}/${repoName}`
-  //   )
-  //   handler.stdout.on('data', (data) => {
-  //     res.write(data)
-  //     console.log('stdout---------', data.toString('utf-8'))
-  //   });
-  //   handler.on('close', (code) => {
-  //     if (code !== 0) {
-  //       console.log(`grep process exited with code ${code}`);
-  //     }
-  //     res.end();
-  //   });
-
-  //   handler.stderr.pipe(process.stderr);
-  //   handler.stdin.write(req.body);
-  //   handler.stdin.end();
-  // }
 }

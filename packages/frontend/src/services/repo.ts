@@ -62,3 +62,12 @@ export async function seachRepo(
   }) as string[];
   return ret;
 }
+
+export async function removeRepo(
+  name: string,
+) {
+  const ret = await axiosNoMessage.post(REPO.REMOVE, {
+    name,
+  }) as string[];
+  return ret;
+}

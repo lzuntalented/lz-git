@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { execSync } from 'child_process';
+import { IsString, isString } from 'class-validator';
 import fs = require('fs');
 import path = require('path');
 import { API_CODE, REPO_ROOT_PATH, REPO_TMP_PATH } from 'src/common/constants';
@@ -16,7 +17,7 @@ import { Git } from 'src/common/git.module';
 import { ISession } from 'src/common/type';
 import { UserGuard } from 'src/guard/auth.guard';
 import { UserService } from 'src/user/user.service';
-import { RepoCreateRequest } from './repo.dto';
+import { RepoCreateRequest, RepoRemoveRequest } from './repo.dto';
 import { RepoService } from './repo.service';
 
 @Controller('/api/repo')
@@ -250,6 +251,27 @@ export class RepoController {
       return list.map((it) => `${it.user.account}/${it.name}`);
     } else {
       return [];
+    }
+  }
+
+  @Post('remove')
+  @UseGuards(UserGuard)
+  async remove(@Body() body: RepoRemoveRequest, @Session() session: ISession) {
+    const { name } = body;
+    const repoName = name.trim();
+    const user = session.userInfo.account;
+    // 检查项目是否存在
+    const info = await this.repoService.getUserRepoDetail(repoName);
+    if (!info || info.user.account !== user) {
+      return;
+    }
+    await this.repoService.remove(info.id);
+    const gitCmd = new Git(REPO_ROOT_PATH);
+    gitCmd.init(user, repoName);
+    try {
+      gitCmd.remove();
+    } catch (error) {
+      console.log('errrr', error);
     }
   }
 }

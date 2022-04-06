@@ -48,6 +48,7 @@ export const REQUEST_URL = {
     LIST_FILES: '/api/repo/list/files',
     READ_FILE: '/api/repo/read/file',
     SEARCH: '/api/repo/search',
+    REMOVE: '/api/repo/remove',
   },
   HOOKS: {
     CREATE: '/api/hooks/create',

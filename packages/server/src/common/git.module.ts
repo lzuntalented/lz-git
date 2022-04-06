@@ -1,4 +1,7 @@
-import { ChildProcessWithoutNullStreams, execSync, spawn } from 'child_process';
+import { spawn } from 'child_process';
+import fs = require('fs');
+import path = require('path');
+import { REPO_TMP_PATH } from './constants';
 
 export const GIT_FORMAT_MESSAGE = '%s';
 export const GIT_FORMAT_TIME = '%ar';
@@ -6,6 +9,8 @@ export const GIT_FORMAT_TIME = '%ar';
 export class Git {
   readonly rootPath: string = '';
   private repoPath = '';
+  private user = '';
+  private repoName = '';
 
   constructor(rootPath = '') {
     this.rootPath = rootPath;
@@ -14,6 +19,20 @@ export class Git {
   init(user = '', repoName = '') {
     const name = /(\.git)$/.test(repoName) ? repoName : `${repoName}.git`;
     this.repoPath = `${this.rootPath}/${user}/${name}`;
+    this.user = user;
+    this.repoName = name;
+  }
+
+  /** 物理删除仓库 */
+  async remove() {
+    try {
+      // 删除仓库
+      fs.rmdirSync(this.repoPath);
+    } catch (error) {}
+    try {
+      // 删除临时目录
+      fs.rmdirSync(path.resolve(REPO_TMP_PATH, this.user, this.repoName));
+    } catch (error) {}
   }
 
   getRepoPath() {
@@ -41,6 +60,12 @@ export class Git {
       .join();
   }
 
+  /**
+   * 创建仓库
+   * @param user
+   * @param repoName
+   * @returns
+   */
   create(user = '', repoName = '') {
     const handler = spawn(
       'git',
@@ -63,6 +88,13 @@ export class Git {
     });
   }
 
+  /**
+   * 执行git命令
+   * @param args 数组 命令字符串
+   * @param input
+   * @param eachOut
+   * @returns 命令执行全部输出
+   */
   run(
     args: string[],
     input?: any,
@@ -89,6 +121,10 @@ export class Git {
         } else {
           res(Buffer.concat(result).toString());
         }
+      });
+      handler.on('error', function (data) {
+        console.log('error', data);
+        rej();
       });
       if (input) {
         handler.stdin.write(input);

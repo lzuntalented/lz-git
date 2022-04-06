@@ -57,7 +57,7 @@ function App() {
                 <Route path="/:user/:repoName" element={<RepoDetailNav />}>
                   <Route path="setting" element={<RepoSettingNav />}>
                     <Route path="hooks" element={<RepoHooks />} />
-                    <Route path="*" element={<RepoSetting />} />
+                    <Route path="" element={<RepoSetting />} />
                   </Route>
                   <Route path="tree/:branch/*" element={<RepoDir />} />
                   <Route path="blob/:branch/*" element={<RepoFile />} />

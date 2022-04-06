@@ -57,4 +57,8 @@ export class RepoService {
       take: 5,
     });
   }
+
+  async remove(id: number) {
+    return await this.repoEntity.delete({ id });
+  }
 }
