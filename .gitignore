@@ -40,3 +40,4 @@ lerna-debug.log*
 .vscode
 sessions/
 build
+.db.config.json

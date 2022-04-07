@@ -45,13 +45,31 @@ export function initTmpDir() {
 }
 
 // =============== sql =================
-export const dbConfig = {
+interface DBConfig {
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  database: string;
+}
+const dbCfg: DBConfig = {
   host: '127.0.0.1',
-  port: 13306,
-  username: 'lz',
-  password: 'kwbacm',
+  port: 3306,
+  username: 'root',
+  password: '',
   database: 'lzgit',
-  // authPlugins: {
-  //   sha256_password: caching_sha2_password({})
-  // }
 };
+
+try {
+  // 获取本地db配置
+  const dbStr = fs.readFileSync(
+    path.resolve(process.cwd(), '.db.config.json'),
+    {
+      encoding: 'utf-8',
+    },
+  );
+  const localDbCfg = JSON.parse(dbStr.toString()) as DBConfig;
+  Object.assign(dbCfg, localDbCfg);
+} catch (error) {}
+
+export const dbConfig = dbCfg;
