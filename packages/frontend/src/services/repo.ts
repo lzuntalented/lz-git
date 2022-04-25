@@ -71,3 +71,14 @@ export async function removeRepo(
   }) as string[];
   return ret;
 }
+
+export async function getCommitContent(
+  user: string,
+  repoName: string,
+  hash: string,
+) {
+  const ret = await axiosNoMessage.get(REPO.COMMIT, {
+    params: { user, repoName, hash },
+  }) as string[];
+  return ret;
+}

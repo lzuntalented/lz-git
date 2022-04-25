@@ -28,11 +28,15 @@ export class Git {
     try {
       // 删除仓库
       fs.rmdirSync(this.repoPath);
-    } catch (error) {}
+    } catch (error) {
+      console.log('remove git dir', error);
+    }
     try {
       // 删除临时目录
       fs.rmdirSync(path.resolve(REPO_TMP_PATH, this.user, this.repoName));
-    } catch (error) {}
+    } catch (error) {
+      console.log('remove git tmp dir', error);
+    }
   }
 
   getRepoPath() {
@@ -58,6 +62,20 @@ export class Git {
       .split('\n')
       .filter((it) => it)
       .join();
+  }
+
+  async getLastCommitInfo(branch = '', srcPath = '') {
+    const list = (await this.run(['log', '-1', branch, '--', srcPath]))
+      .split('\n')
+      .filter((it) => it);
+    const hash = list[0].replace(/^(commit )/, '').trim();
+    const time = list[2].replace(/^(Date: )/, '').trim();
+    const message = list[3].trim();
+    return {
+      hash,
+      time: +new Date(time),
+      message,
+    };
   }
 
   /**

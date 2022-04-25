@@ -9,6 +9,7 @@ import { FileOutlined, FolderFilled, FolderOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 // import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import moment from 'moment';
 import { getBranch, getFilesWithPath } from '../../../services/repo';
 import style from './index.module.css';
 import RepoDetailNav from '../../../components/repo-detail-nav';
@@ -20,6 +21,7 @@ interface ListItemData {
   isTree: boolean, hash: string, name: string
   commitMsg?: string
   commitTime?: string
+  commitHash?: string
   isBack?: boolean
 }
 
@@ -128,8 +130,17 @@ function RepoDir() {
 
                   </div>
                 </Col>
-                <Col style={{ flex: 1 }}>{it.commitMsg}</Col>
-                <Col style={{ width: 100, textAlign: 'right' }}>{it.commitTime}</Col>
+                <Col style={{ flex: 1 }}>
+                  <span
+                    className={style.fileName}
+                    onClick={() => {
+                      navigate(`/${user}/${repoName}/commit/${it.commitHash}`);
+                    }}
+                  >
+                    {it.commitMsg}
+                  </span>
+                </Col>
+                <Col style={{ width: 100, textAlign: 'right' }}>{moment(it.commitTime).fromNow()}</Col>
               </Row>
             </List.Item>
           ))}

@@ -1,0 +1,29 @@
+.box {
+  margin-bottom: 16px;
+}
+.trDel {
+  padding: 4px 0;
+  background-color: #ffebe9;
+}
+.trIns {
+  padding: 4px 0;
+  background-color: #e6ffec;
+}
+.tdLeft {
+  padding: 0 10px;
+  width: 1%;
+}
+.tdRight {
+  padding: 0 10px;
+  width: 1%;
+}
+.trIns .tdLeft, .trIns .tdRight {
+  background-color: #ccffd8;
+}
+.trDel .tdLeft, .trDel .tdRight {
+  background-color: #ffd7d5;
+}
+.trLineRange {
+  padding: 4px 0;
+  background-color: #ddf4ff;
+}

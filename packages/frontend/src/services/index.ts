@@ -49,6 +49,7 @@ export const REQUEST_URL = {
     READ_FILE: '/api/repo/read/file',
     SEARCH: '/api/repo/search',
     REMOVE: '/api/repo/remove',
+    COMMIT: '/api/repo/commit',
   },
   HOOKS: {
     CREATE: '/api/hooks/create',

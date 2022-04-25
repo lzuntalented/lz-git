@@ -1,0 +1,4 @@
+.comp-render-codemirror .CodeMirror {
+  height: auto;
+  overflow: hidden;
+}

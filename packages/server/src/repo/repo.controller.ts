@@ -156,25 +156,33 @@ export class RepoController {
       const [id, type, other] = it.split(' ');
       const [hash, name] = other.split('\t');
 
-      const commitMsg = (
-        await gitCmd.getLastCommitMessage(
-          branch,
-          treeUnique ? `${treeUnique}/${name}` : name,
-        )
-      )
-        .split('\n')
-        .filter((it) => it)
-        .join();
+      // const commitMsg = (
+      //   await gitCmd.getLastCommitMessage(
+      //     branch,
+      //     treeUnique ? `${treeUnique}/${name}` : name,
+      //   )
+      // )
+      //   .split('\n')
+      //   .filter((it) => it)
+      //   .join();
 
-      const commitTime = (
-        await gitCmd.getLastCommitTime(
-          branch,
-          treeUnique ? `${treeUnique}/${name}` : name,
-        )
-      )
-        .split('\n')
-        .filter((it) => it)
-        .join();
+      // const commitTime = (
+      //   await gitCmd.getLastCommitTime(
+      //     branch,
+      //     treeUnique ? `${treeUnique}/${name}` : name,
+      //   )
+      // )
+      //   .split('\n')
+      //   .filter((it) => it)
+      //   .join();
+      const {
+        hash: commitHash,
+        time: commitTime,
+        message: commitMsg,
+      } = await gitCmd.getLastCommitInfo(
+        branch,
+        treeUnique ? `${treeUnique}/${name}` : name,
+      );
 
       if (name.toLowerCase() === 'readme.md') {
         readmeContent = await gitCmd.getFileContent(
@@ -189,6 +197,7 @@ export class RepoController {
         name,
         commitMsg,
         commitTime,
+        commitHash,
       });
     }
 
@@ -273,5 +282,110 @@ export class RepoController {
     } catch (error) {
       console.log('errrr', error);
     }
+  }
+
+  /**
+   * git log -3  --format="%an %s %ar" -- A.txt
+   * @param user
+   * @param repoName
+   * @param branch
+   * @param treeUnique
+   * @returns
+   */
+  @Get('commit')
+  async getCommitInfo(
+    @Query('user') user: string,
+    @Query('repoName') repoName: string,
+    @Query('hash') hash: string,
+  ) {
+    const gitCmd = new Git(REPO_ROOT_PATH);
+    gitCmd.init(user, repoName);
+    const ret = await gitCmd.run(['show', hash]);
+    const fileMap = [];
+    const fileContent = {
+      diffLine: 0,
+      findDiff: false,
+      collect: false,
+      str: [],
+      startLine: 0,
+      endLine: 0,
+      lineStr: '',
+    };
+    const commitInfo = {
+      author: '',
+      date: 0,
+      message: '',
+      hash,
+    };
+    ret.split('\n').forEach((it, i) => {
+      if (i === 1) {
+        commitInfo.author = it
+          .replace(/^(Author:)/, '')
+          .trim()
+          .split(' ')
+          .slice(0, -1)
+          .join('');
+      }
+      if (i === 2) {
+        commitInfo.date = +new Date(it.replace(/^(Date:)/, '').trim());
+      }
+      if (i === 4) {
+        commitInfo.message = it.trim();
+      }
+      if (/^(diff --git )/.test(it)) {
+        if (fileMap.length > 0) {
+          const obj = fileMap[fileMap.length - 1];
+          obj.str = fileContent.str;
+          obj.startLine = fileContent.startLine;
+          obj.endLine = fileContent.endLine;
+          obj.lineStr = fileContent.lineStr;
+        }
+        fileContent.findDiff = true;
+        fileContent.diffLine = i;
+        fileContent.str = [];
+        fileContent.collect = false;
+        fileMap.push({
+          file: it
+            .split(' ')
+            .slice(-1)
+            .join('')
+            .replace(/^(b\/)/, ''),
+          str: '',
+        });
+      }
+      if (fileContent.findDiff && i === fileContent.diffLine + 4) {
+        const lineList = it.replace(/^(@@ (.*) @@)(.*)/, '$2');
+
+        const [startStr, endStr] = lineList.split(' ');
+
+        const [start] = startStr.split(',');
+        const startLine = +start.replace(/[^0-9]/g, '');
+
+        const [end] = endStr.split(',');
+        const endLine = +end.replace(/[^0-9]/g, '');
+
+        fileContent.startLine = startLine;
+        fileContent.endLine = endLine;
+        fileContent.lineStr = it;
+      }
+      if (fileContent.findDiff && i > fileContent.diffLine + 5) {
+        fileContent.collect = true;
+        fileContent.findDiff = false;
+      }
+      if (fileContent.collect) {
+        fileContent.str.push(it);
+      }
+    });
+    if (fileMap.length > 0) {
+      const obj = fileMap[fileMap.length - 1];
+      obj.str = fileContent.str;
+      obj.startLine = fileContent.startLine;
+      obj.endLine = fileContent.endLine;
+      obj.lineStr = fileContent.lineStr;
+    }
+    return {
+      commitInfo,
+      fileMap,
+    };
   }
 }

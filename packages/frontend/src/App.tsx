@@ -26,6 +26,8 @@ import Home from './pages/home';
 import { GlobalProvider, UserInfo } from './context';
 import Header from './components/header';
 import Auth from './components/auth';
+import NoPage from './pages/no-page';
+import RepoCommit from './pages/repo/commit';
 
 const LOADING_INIT = -1;
 const LOADING_ING = 0;
@@ -55,10 +57,19 @@ function App() {
                 <Route path="/create" element={<Auth><RepoCreate /></Auth>} />
                 <Route path="/:user" element={<RepoList />} />
                 <Route path="/:user/:repoName" element={<RepoDetailNav />}>
+                  <Route path="issues" element={<NoPage />} />
+                  <Route path="pr" element={<NoPage />} />
+                  <Route path="discussions" element={<NoPage />} />
+                  <Route path="actions" element={<NoPage />} />
+                  <Route path="projects" element={<NoPage />} />
+                  <Route path="wiki" element={<NoPage />} />
+                  <Route path="security" element={<NoPage />} />
+                  <Route path="insights" element={<NoPage />} />
                   <Route path="setting" element={<RepoSettingNav />}>
                     <Route path="hooks" element={<RepoHooks />} />
                     <Route path="" element={<RepoSetting />} />
                   </Route>
+                  <Route path="commit/:hash" element={<RepoCommit />} />
                   <Route path="tree/:branch/*" element={<RepoDir />} />
                   <Route path="blob/:branch/*" element={<RepoFile />} />
                   <Route path="" element={<RepoDir />} />
