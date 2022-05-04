@@ -301,22 +301,13 @@ export class RepoController {
     const gitCmd = new Git(REPO_ROOT_PATH);
     gitCmd.init(user, repoName);
     const ret = await gitCmd.run(['show', hash]);
-    const fileMap = [];
-    const fileContent = {
-      diffLine: 0,
-      findDiff: false,
-      collect: false,
-      str: [],
-      startLine: 0,
-      endLine: 0,
-      lineStr: '',
-    };
     const commitInfo = {
       author: '',
       date: 0,
       message: '',
       hash,
     };
+    const changeList = [];
     ret.split('\n').forEach((it, i) => {
       if (i === 1) {
         commitInfo.author = it
@@ -333,59 +324,49 @@ export class RepoController {
         commitInfo.message = it.trim();
       }
       if (/^(diff --git )/.test(it)) {
-        if (fileMap.length > 0) {
-          const obj = fileMap[fileMap.length - 1];
-          obj.str = fileContent.str;
-          obj.startLine = fileContent.startLine;
-          obj.endLine = fileContent.endLine;
-          obj.lineStr = fileContent.lineStr;
-        }
-        fileContent.findDiff = true;
-        fileContent.diffLine = i;
-        fileContent.str = [];
-        fileContent.collect = false;
-        fileMap.push({
+        changeList.push({
           file: it
             .split(' ')
             .slice(-1)
             .join('')
             .replace(/^(b\/)/, ''),
-          str: '',
         });
-      }
-      if (fileContent.findDiff && i === fileContent.diffLine + 4) {
+      } else if (/^(@@ (.*) @@)/.test(it)) {
+        const obj = changeList[changeList.length - 1];
+
         const lineList = it.replace(/^(@@ (.*) @@)(.*)/, '$2');
 
         const [startStr, endStr] = lineList.split(' ');
 
         const [start] = startStr.split(',');
-        const startLine = +start.replace(/[^0-9]/g, '');
+        const startLine = +start.replace(/[^0-9]/g, '') || 1;
 
         const [end] = endStr.split(',');
         const endLine = +end.replace(/[^0-9]/g, '');
 
-        fileContent.startLine = startLine;
-        fileContent.endLine = endLine;
-        fileContent.lineStr = it;
-      }
-      if (fileContent.findDiff && i > fileContent.diffLine + 5) {
-        fileContent.collect = true;
-        fileContent.findDiff = false;
-      }
-      if (fileContent.collect) {
-        fileContent.str.push(it);
+        // obj.startLine = startLine;
+        // obj.endLine = endLine;
+        // obj.lineStr = it;
+        obj.str = [];
+        if (!Array.isArray(obj.list)) {
+          obj.list = [];
+        }
+        obj.list.push({
+          startLine,
+          endLine,
+          lineStr: it,
+          str: [],
+        });
+      } else if (changeList.length > 0) {
+        const obj = changeList[changeList.length - 1];
+        if (Array.isArray(obj.list) && obj.list.length > 0) {
+          obj.list[obj.list.length - 1].str.push(it);
+        }
       }
     });
-    if (fileMap.length > 0) {
-      const obj = fileMap[fileMap.length - 1];
-      obj.str = fileContent.str;
-      obj.startLine = fileContent.startLine;
-      obj.endLine = fileContent.endLine;
-      obj.lineStr = fileContent.lineStr;
-    }
     return {
       commitInfo,
-      fileMap,
+      fileMap: changeList,
     };
   }
 }

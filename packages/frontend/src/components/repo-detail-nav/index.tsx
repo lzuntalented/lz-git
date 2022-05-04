@@ -8,7 +8,9 @@ import {
 } from 'react-router-dom';
 import {
   BookOutlined,
-  CodepenOutlined, CommentOutlined, CompassOutlined, ForkOutlined, LineChartOutlined, PlayCircleOutlined, ProjectOutlined, PullRequestOutlined, SecurityScanOutlined, SettingOutlined, StarOutlined,
+  CodepenOutlined, CommentOutlined, CompassOutlined, ForkOutlined,
+  LineChartOutlined, PlayCircleOutlined, ProjectOutlined,
+  PullRequestOutlined, SecurityScanOutlined, SettingOutlined, StarOutlined,
 } from '@ant-design/icons';
 import style from './index.module.css';
 

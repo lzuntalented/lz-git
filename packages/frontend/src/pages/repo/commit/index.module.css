@@ -27,3 +27,13 @@
   padding: 4px 0;
   background-color: #ddf4ff;
 }
+.tdStr pre{
+  margin-bottom: 0;
+  padding: 0 !important;
+  background-color: transparent !important;
+}
+.trLineStr {
+  color: #57606a;
+  line-height: 32px;
+  padding: 4px 0;
+}
