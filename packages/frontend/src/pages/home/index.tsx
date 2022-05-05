@@ -1,5 +1,5 @@
 import {
-  Button, Col, Input, Row,
+  Button, Card, Col, Input, Row, Image,
 } from 'antd';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -66,6 +66,34 @@ function Home() {
           </Col>
           <Col span={8}>
             <img src="http://static.lzz.show/sxm/astro-mona.svg" alt="" width="100%" />
+          </Col>
+        </Row>
+      </div>
+      <div className={style.preview}>
+        <div className={style.previewTitle}>示例项目</div>
+        <div className={style.previewProject}>
+          <a href="/lz/lz-git">lz/lz-git</a>
+        </div>
+        <Row itemType="flex" justify="space-around">
+          <Col>
+            <div className={style.previewImgTitle}>文件浏览</div>
+          </Col>
+          <Col>
+            <div className={style.previewImgTitle}>DIFF明细</div>
+          </Col>
+        </Row>
+        <Row itemType="flex" justify="space-around">
+          <Col>
+            <Image
+              height={300}
+              src="http://www.lzuntalented.cn/img/git/git.home.png"
+            />
+          </Col>
+          <Col>
+            <Image
+              height={300}
+              src="http://www.lzuntalented.cn/img/git/git.diff.png"
+            />
           </Col>
         </Row>
       </div>

@@ -66,3 +66,35 @@
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
 }
+.preview {
+  background-color: #fff;
+  padding-bottom: 24px;
+}
+.previewTitle {
+  padding: 24px 0;
+  font-size: 48px;
+  color: #1f1f1f;
+  text-align: center;
+}
+.previewProject {
+  color: #8193b2;
+  padding: 24px 12px;
+  border: 1px solid #8193b2;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 24px;
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.previewProject a {
+  color: #8193b2;
+}
+
+.previewImgTitle {
+  padding: 24px 0;
+  font-size: 32px;
+  color: #1f1f1f;
+  text-align: center;
+}
