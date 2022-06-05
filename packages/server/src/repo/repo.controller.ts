@@ -16,6 +16,7 @@ import { API_CODE, REPO_ROOT_PATH, REPO_TMP_PATH } from 'src/common/constants';
 import { Git } from 'src/common/git.module';
 import { ISession } from 'src/common/type';
 import { UserGuard } from 'src/guard/auth.guard';
+import { StarService } from 'src/star/star.service';
 import { UserService } from 'src/user/user.service';
 import { RepoCreateRequest, RepoRemoveRequest } from './repo.dto';
 import { RepoService } from './repo.service';
@@ -25,6 +26,7 @@ export class RepoController {
   constructor(
     private readonly repoService: RepoService,
     private readonly userService: UserService,
+    private readonly starService: StarService,
   ) {}
 
   @Post('create')
@@ -64,13 +66,27 @@ export class RepoController {
   }
 
   @Get('list')
-  async list(@Query('user') user: string, @Session() session: ISession) {
+  async list(@Query('user') user: string) {
     const info = await this.repoService.getUserRepoList(user);
-    return (info ? info.repositories : []).map((it) => {
+    const result = (info ? info.repositories : []).map((it) => {
       return {
         name: it.name,
         describe: it.describe,
+        user: user,
+        repoId: it.id,
       };
+    });
+    const countList = await this.starService.getReposCount(
+      info?.repositories || [],
+    );
+    console.log(countList, 'countList------------');
+    return result.map((it) => {
+      const ret = { ...it, starNum: 0 };
+      const obj = countList.find((item) => item.repoId === it.repoId);
+      if (obj) {
+        ret.starNum = obj.num;
+      }
+      return ret;
     });
   }
 

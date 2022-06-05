@@ -1,3 +1,4 @@
+import { IsEmpty, IsString, Length } from 'class-validator';
 import { Response, Request } from 'express';
 
 export class ApiResponse {
@@ -23,4 +24,12 @@ export interface ISession {
 
 export interface SessionRequest extends Request {
   session?: ISession;
+}
+
+export class RepositoryBodyRequest {
+  @IsString()
+  @Length(1)
+  repoName: string;
+
+  user?: string;
 }

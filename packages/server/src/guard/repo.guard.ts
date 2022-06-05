@@ -7,6 +7,7 @@ export class RepoGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
+
     if (request?.session?.userInfo?.id) {
       return true;
     }

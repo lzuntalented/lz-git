@@ -1,12 +1,10 @@
-import { ApiResponse } from 'src/common/type';
+import { ApiResponse, RepositoryBodyRequest } from 'src/common/type';
 
 export class HooksCreateResponse extends ApiResponse {}
 
-export class HooksCreateRequest {
-  user: string;
-  name: string;
+export class HooksCreateRequest extends RepositoryBodyRequest {
   url: string;
-  method: number;
-  eventType: number;
-  active: boolean;
+  pattern: string;
+  security?: string;
+  type: number;
 }

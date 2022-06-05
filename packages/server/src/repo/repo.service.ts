@@ -4,6 +4,7 @@ import { Like, Repository } from 'typeorm';
 import { createRandom } from 'src/utils';
 import { Repo } from './repo.entity';
 import { User } from 'src/user/user.entity';
+import { StarService } from 'src/star/star.service';
 
 @Injectable()
 export class RepoService {
@@ -60,5 +61,17 @@ export class RepoService {
 
   async remove(id: number) {
     return await this.repoEntity.delete({ id });
+  }
+
+  async getRepoDetail(name: string, userId: string) {
+    const user = new User();
+    user.account = userId;
+    return await this.repoEntity.findOne({
+      relations: ['user'],
+      where: {
+        name,
+        user,
+      },
+    });
   }
 }

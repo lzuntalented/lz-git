@@ -1,5 +1,13 @@
+import { Hooks } from 'src/hooks/hooks.entity';
+import { Star } from 'src/star/star.entity';
 import { User } from 'src/user/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity('repo')
 export class Repo {
@@ -39,6 +47,12 @@ export class Repo {
   })
   updateTime: string;
 
-  @ManyToOne((type) => User, (user) => user.repositories)
+  @ManyToOne(() => User, (user) => user.repositories)
   user: User;
+
+  @OneToMany(() => Hooks, (hooks) => hooks.repo)
+  hooks: Hooks[];
+
+  @OneToMany(() => Star, (s) => s.user)
+  stars: Star[];
 }

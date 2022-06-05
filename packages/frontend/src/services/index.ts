@@ -50,6 +50,10 @@ export const REQUEST_URL = {
     SEARCH: '/api/repo/search',
     REMOVE: '/api/repo/remove',
     COMMIT: '/api/repo/commit',
+    STAR: '/api/star/like',
+    UNSTAR: '/api/star/unlike',
+    STAR_STATUS: '/api/star/status',
+    STAR_LIST: '/api/star/list',
   },
   HOOKS: {
     CREATE: '/api/hooks/create',

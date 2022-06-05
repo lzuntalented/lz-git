@@ -22,6 +22,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+    // console.log('exception---------', exception);
     const httpMsg =
       exception instanceof HttpException ? exception.message : '未知错误';
 

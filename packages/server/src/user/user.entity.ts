@@ -1,4 +1,5 @@
 import { Repo } from 'src/repo/repo.entity';
+import { Star } from 'src/star/star.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity('user')
@@ -50,4 +51,7 @@ export class User {
 
   @OneToMany((type) => Repo, (repo) => repo.user)
   repositories: Repo[];
+
+  @OneToMany(() => Star, (s) => s.user)
+  stars: Star[];
 }

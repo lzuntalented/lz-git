@@ -1,0 +1,40 @@
+
+.item {
+  padding: 24px 0;
+  border-bottom: 1px solid #d8dee4;
+}
+
+.itemTitle {
+  font-size: 20px;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.userName {
+  font-size: 26px;
+  line-height: 1.25;
+  padding-top: 16px;
+  color: #24292f;
+}
+
+.account {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 24px;
+  color: var(--color-fg-muted);
+}
+
+.desc {
+  margin-bottom: 8px;
+}
+
+.tagContainer {
+  font-size: 12px;
+}
+
+.tagNum {
+  margin-left: 4px;
+  margin-right: 12px;
+}

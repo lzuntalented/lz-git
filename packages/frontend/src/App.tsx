@@ -28,6 +28,7 @@ import Header from './components/header';
 import Auth from './components/auth';
 import NoPage from './pages/no-page';
 import RepoCommit from './pages/repo/commit';
+import Overview from './pages/overview';
 
 const LOADING_INIT = -1;
 const LOADING_ING = 0;
@@ -55,7 +56,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/install" element={<Install />} />
                 <Route path="/create" element={<Auth><RepoCreate /></Auth>} />
-                <Route path="/:user" element={<RepoList />} />
+                <Route path="/:user" element={<Overview />} />
                 <Route path="/:user/:repoName" element={<RepoDetailNav />}>
                   <Route path="issues" element={<NoPage />} />
                   <Route path="pr" element={<NoPage />} />

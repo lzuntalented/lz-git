@@ -1,7 +1,8 @@
 import {
+  Badge,
   Button, Col, Menu, Row,
 } from 'antd';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Outlet,
   useLocation, useNavigate, useParams,
@@ -13,6 +14,7 @@ import {
   PullRequestOutlined, SecurityScanOutlined, SettingOutlined, StarOutlined,
 } from '@ant-design/icons';
 import style from './index.module.css';
+import { getStarStatus, star, unStar } from '../../services/repo';
 
 interface RepoDetailNavProps {
   children: React.ReactNode
@@ -86,6 +88,22 @@ function RepoDetailNav() {
   const navigate = useNavigate();
   const { pathname } = location;
   const navKey = pathname.split('/').slice(3, 4).join() || 'code';
+  const [starStatus, setStar] = useState({ status: false, count: 0 });
+
+  const onStar = () => {
+    (starStatus.status ? unStar : star)(user, repoName).then((r) => {
+      setStar({
+        ...starStatus,
+        status: !starStatus.status,
+      });
+    });
+  };
+
+  useEffect(() => {
+    getStarStatus(user, repoName).then((r) => {
+      setStar(r);
+    });
+  }, []);
 
   return (
     <div>
@@ -118,7 +136,19 @@ function RepoDetailNav() {
                 <Button icon={<ForkOutlined />}>Fork</Button>
               </Col>
               <Col>
-                <Button icon={<StarOutlined />}>Star</Button>
+                <Button
+                  icon={<StarOutlined style={{ paddingRight: 8 }} />}
+                  onClick={onStar}
+                >
+                  <Row itemType="flex" justify="space-between" gutter={4} style={{ display: 'inline-flex' }} align="middle">
+                    <Col>
+                      {!starStatus.status ? 'star' : 'unstar'}
+                    </Col>
+                    <Col>
+                      <Badge count={starStatus.count} size="small" />
+                    </Col>
+                  </Row>
+                </Button>
               </Col>
             </Row>
           </Col>

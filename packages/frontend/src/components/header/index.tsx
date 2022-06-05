@@ -14,6 +14,7 @@ import style from './index.module.css';
 function Header() {
   const { userInfo } = useContext();
   const location = useLocation();
+  const navigate = useNavigate();
   const menus = [
     {
       title: '创建新仓库',
@@ -22,11 +23,22 @@ function Header() {
   ];
   const userMenus = [
     {
+      title: 'Your profile',
+      href: `/${userInfo.account}`,
+    },
+    {
+      title: 'Your stars',
+      href: `/${userInfo.account}?tab=stars`,
+    },
+    {
       title: '退出登录',
-      href: '/',
+      onClick: () => {
+        logout().then(() => {
+          window.location.href = '/';
+        });
+      },
     },
   ];
-  const navigate = useNavigate();
   useEffect(() => {
     if (userInfo.account) navigate(`/${userInfo.account}`);
   }, []);
@@ -98,9 +110,11 @@ function Header() {
                             className={style.menuItem}
                             key={it.title}
                             onClick={() => {
-                              logout().then(() => {
-                                window.location.href = '/';
-                              });
+                              if (it.onClick) {
+                                it.onClick();
+                              } else {
+                                navigate(it.href);
+                              }
                             }}
                           >
                             {it.title}
@@ -115,7 +129,7 @@ function Header() {
                     // }}
                     // placement="bottomRight"
                   >
-                    <span className={style.user} onClick={() => navigate(`/${userInfo.account}`)}>
+                    <span className={style.user}>
                       <span className={style.userImg}>
                         <Avatar url={userInfo.avatar} name={userInfo.account || userInfo.name || ''} />
                       </span>
